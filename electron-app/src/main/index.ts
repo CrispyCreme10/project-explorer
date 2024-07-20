@@ -1,5 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
+import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
@@ -16,6 +16,15 @@ function createWindow(): void {
       sandbox: false
     }
   })
+
+  // https://electron-vite.org/guide/hmr
+  // Load the local URL for development or the local
+  // html file for production
+  if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
+  }
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
