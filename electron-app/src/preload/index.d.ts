@@ -1,8 +1,9 @@
-import { ElectronAPI } from '@electron-toolkit/preload'
+import { GetProjects } from '@shared/types'
 
 declare global {
   interface Window {
-    electron: ElectronAPI
-    api: unknown
+    context: {
+      getProjects: GetProjects
+    }
   }
 }
